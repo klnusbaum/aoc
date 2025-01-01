@@ -11,7 +11,6 @@ type Solver interface {
 }
 
 type Driver struct {
-	InFile string
 	Solver Solver
 }
 
@@ -31,7 +30,7 @@ func (d Driver) Solve() error {
 }
 
 func (d Driver) input() ([]string, error) {
-	f, err := os.Open(d.InFile)
+	f, err := os.Open("input.txt")
 	if err != nil {
 		return nil, fmt.Errorf("couldn't open input file: %s", err)
 	}

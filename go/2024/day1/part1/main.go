@@ -13,7 +13,6 @@ import (
 
 func main() {
 	d := driver.Driver{
-		InFile: "input.txt",
 		Solver: D1P1Solver{},
 	}
 
