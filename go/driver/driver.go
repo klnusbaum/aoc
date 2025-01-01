@@ -7,7 +7,7 @@ import (
 )
 
 type Solver interface {
-	Solve(input []string) error
+	Solve(input []string) (string, error)
 }
 
 type Driver struct {
@@ -21,7 +21,13 @@ func (d Driver) Solve() error {
 		return fmt.Errorf("failed to collect input: %s", err)
 	}
 
-	return d.S.Solve(i)
+	result, err := d.Solver.Solve(i)
+	if err != nil {
+		return fmt.Errorf("failed to solve: %s", err)
+	}
+
+	fmt.Println(result)
+	return nil
 }
 
 func (d Driver) input() ([]string, error) {
