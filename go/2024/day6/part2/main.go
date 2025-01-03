@@ -37,18 +37,16 @@ func (s D6P2Solver) Solve(input []string) (string, error) {
 				continue
 			}
 
-			a[i][j] = '#'
-			if hasLoop(a, startX, startY) {
+			if hasLoop(a, startX, startY, i, j) {
 				numLoops++
 			}
-			a[i][j] = '.'
 		}
 	}
 
 	return fmt.Sprintf("Total loops: %d", numLoops), nil
 }
 
-func hasLoop(a area, startX, startY int) bool {
+func hasLoop(a area, startX, startY, tryX, tryY int) bool {
 	curDir := UP
 	curX, curY := startX, startY
 	locationTracker := newLocationTracker()
@@ -74,7 +72,7 @@ func hasLoop(a area, startX, startY int) bool {
 			break
 		}
 
-		if a[nextX][nextY] == '#' {
+		if a[nextX][nextY] == '#' || (nextX == tryX && nextY == tryY) {
 			curDir = nextDir(curDir)
 		} else {
 			curX, curY = nextX, nextY
