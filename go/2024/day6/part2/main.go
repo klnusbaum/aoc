@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"slices"
+	"sync"
 
 	"github.com/klnusbaum/aoc/go/driver"
 )
@@ -25,6 +26,9 @@ func (s D6P2Solver) Solve(input []string) (string, error) {
 	a := parseArea(input)
 	startX, startY := curLocation(a)
 	numLoops := 0
+	var numLoopsMu sync.Mutex
+	var numLoopsGroup sync.WaitGroup
+
 	for i, row := range a {
 		for j := range row {
 			if i == startX && j == startY {
@@ -37,12 +41,19 @@ func (s D6P2Solver) Solve(input []string) (string, error) {
 				continue
 			}
 
-			if hasLoop(a, startX, startY, i, j) {
-				numLoops++
-			}
+			numLoopsGroup.Add(1)
+			go func(sa area, sx, sy, tx, ty int) {
+				defer numLoopsGroup.Done()
+				if hasLoop(a, startX, startY, i, j) {
+					numLoopsMu.Lock()
+					numLoops++
+					numLoopsMu.Unlock()
+				}
+			}(a, startX, startY, i, j)
 		}
 	}
 
+	numLoopsGroup.Wait()
 	return fmt.Sprintf("Total loops: %d", numLoops), nil
 }
 
