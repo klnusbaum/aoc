@@ -1,3 +1,5 @@
 - I'm pretty sure there's a better algorithm for day six part 2.
   I suspect there's a way to figure out the loops without simulating every single block addition.
   Or maybe a way to prune the search space.
+- Day 7 Part 1 could probably be faster if, instead of generating all of the possible values for an equation,
+  we generate them one by one and as soon as we find one that works, we stop looking.
